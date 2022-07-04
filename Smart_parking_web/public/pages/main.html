@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-functions.js"></script>
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+
+  <style>
+    .toggle {
+  --width: 50px;
+  --height: calc(var(--width) / 2);
+  --border-radius: calc(var(--height) / 2);
+
+  display: inline-block;
+  cursor: pointer;
+}
+
+.toggle__input {
+  display: none;
+}
+
+.toggle__fill {
+  position: relative;
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  background: #dddddd;
+  transition: background 0.2s;
+}
+
+.toggle__input:checked ~ .toggle__fill {
+  background: #009578;
+}
+
+.toggle__fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--height);
+  width: var(--height);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  border-radius: var(--border-radius);
+  transition: transform 0.2s;
+}
+
+.toggle__input:checked ~ .toggle__fill::after {
+  transform: translateX(var(--height));
+}
+  </style>
+  
+  <title>
+    Smart-Parking
+  </title>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+  <!-- Nucleo Icons -->
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <!-- CSS Files -->
+  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.2" rel="stylesheet" />
+</head>
+
+<body class="g-sidenav-show  bg-gray-200">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href=" https://www.facebook.com/huyyhoang2001/ " target="_blank">
+        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">Nhóm 5</span>
+      </a>
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/dashboard.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/logs.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Logs</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-primary" href="../pages/main.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Main</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/charts.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Charts</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/sign-in.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">login</i>
+            </div>
+            <span class="nav-link-text ms-1">Sign Out</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    
+    <!-- End Navbar -->
+    <div class="card-header p-3 pt-2" style="height: 290px; background-color: #E4316F ; width: 96%;border-radius: 10px;box-shadow: 2px 2px 2px 1px gray;margin:auto;margin-top: 20px;">
+    </div>
+    <div class="dieu_khien_thiet_bi"style="width:80%;height:400px;margin: auto;border-radius: 10px;margin-top: -220px; ">
+      <div class="card"  style="height:350px;margin-top:2%;border-radius: 10px;">
+          <div class="content">
+            <div style="background-color: #DC143C;height: 60px;border-top-left-radius: 10px;border-top-right-radius: 10px; ">
+              <p style="color: white; margin-left: 35%;font-size: 40px;font-weight: bold; ">
+                Trạng thái thiết bị
+              </p>
+            </div>
+              <form>
+                  <div style="display: flex; margin-top: 10px;">
+                    <div style="margin-left: 70px; display: flex;width:300px">
+                      <div>
+                        <h1 style="font-weight: bold; color: #DC143C;">Slot1</h1>
+                        <h2 id="slot1_status" style="height: fit-content; width: fit-content;margin-top: -10px;margin-left: -30px;"></h2>
+                      </div>
+                    </div>
+
+                    <div style="display: flex;width:300px" >
+                      <div>
+                        <h1 style="font-weight: bold; color: #DC143C">Slot2</h1>
+                        <h2 id="slot2_status" style="height: fit-content; width: fit-content;margin-top: -10px;margin-left: -30px;"></h2>
+                      </div>   
+                    </div>
+
+                    <div style="display: flex;width:300px">
+                      <div>
+                        <h1 style="font-weight: bold; color: #DC143C">Slot3</h1>
+                        <h2 id="slot3_status" style="height: fit-content; width: fit-content;margin-top: -10px;margin-left: -30px;"></h2>
+                      </div>  
+                    </div>
+
+
+                    <div style="margin-left: 10px; display: flex;">
+                      <div>
+                        <h1 style="font-weight: bold; color: #DC143C;">Slot4</h1>
+                        <h2 id="slot4_status" style="height: fit-content; width: fit-content;margin-top: -10px;margin-left: -30px;"></h2>
+                      </div>
+                    </div>
+                  </div>
+                                                                                                              
+              </form>
+          </div>
+      </div>                  
+  </div>
+  
+  <script>
+    (function(){
+      // configure firebase
+      var config = {
+         apiKey: "AIzaSyB8gg19R93oAgVWUvOZYik7rl6XEm4zGeY",
+         authDomain: "webapp-f4936.firebaseapp.com",
+         databaseURL: "https://webapp-f4936-default-rtdb.firebaseio.com",
+         projectId: "webapp-f4936",
+         storageBucket: "webapp-f4936.appspot.com",
+         messagingSenderId: "690434841614",
+         appId: "1:690434841614:web:a1756470001dd3f7cdf05f",
+
+    };
+      //getStatus_sensor
+      var curDate = new Date();
+        
+      var curDay = curDate.getDate();
+   
+      var curMonth = curDate.getMonth() + 1;
+        
+      var curYear = curDate.getFullYear();
+
+      
+      // Initialize Firebase
+
+      firebase.initializeApp(config);
+      var ps1= document.getElementById('slot1_status');
+      var dbRefps1 = firebase.database().ref('UIT_Parking').child('Slot1_status');
+      dbRefps1.on('value', snap => {
+        console.log(snap.val().toString());
+        if (snap.val() == 0) {
+          ps1.style.color = "red" ;
+          ps1.innerText = "● Inactive"
+        }
+        if (snap.val() > 0) {
+          ps1.style.color = "green";
+          ps1.innerText = "● Active"
+        }
+      });
+
+      var ps2= document.getElementById('slot2_status');
+      var dbRefps2 = firebase.database().ref('UIT_Parking').child('Slot2_status');
+      dbRefps2.on('value', snap => {
+        if (snap.val() == 0) {
+          ps2.style.color = "red" ;
+          ps2.innerText = "● Inactive"
+        }
+        if (snap.val() > 0) {
+          ps2.style.color = "green";
+          ps2.innerText = "● Active"
+        }
+      });
+
+      var ps3= document.getElementById('slot3_status');
+      var dbRefps3 = firebase.database().ref('UIT_Parking').child('Slot3_status');
+      dbRefps3.on('value', snap => {
+        if (snap.val() == 0) {
+          ps3.style.color = "red" ;
+          ps3.innerText = "● Inactive"
+        }
+        if (snap.val() > 0) {
+          ps3.style.color = "green";
+          ps3.innerText = "● Active"
+        }
+      });
+
+      var ps4= document.getElementById('slot4_status');
+      var dbRefps4 = firebase.database().ref('UIT_Parking').child('Slot4_status');
+      dbRefps4.on('value', snap => {
+        if (snap.val() == 0) {
+          ps4.style.color = "red" ;
+          ps4.innerText = "● Inactive"
+        }
+        if (snap.val() > 0) {
+          ps4.style.color = "green";
+          ps4.innerText = "● Active"
+        }
+      });
+    }())        
+      
+    </script>
+
+
+  </main>
+  <div class="fixed-plugin">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+      <i class="material-icons py-2">settings</i>
+    </a>
+    <div class="card shadow-lg">
+      <div class="card-header pb-0 pt-3">
+        <div class="float-start">
+          <h5 class="mt-3 mb-0">Setting</h5>
+          <p>See our dashboard options.</p>
+        </div>
+        <div class="float-end mt-4">
+          <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+        <!-- End Toggle Button -->
+      </div>
+      <hr class="horizontal dark my-1">
+      <div class="card-body pt-sm-3 pt-0">
+        <!-- Sidebar Backgrounds -->
+        <div>
+          <h6 class="mb-0">Sidebar Colors</h6>
+        </div>
+        <a href="javascript:void(0)" class="switch-trigger background-color">
+          <div class="badge-colors my-2 text-start">
+            <span class="badge filter bg-gradient-primary active" data-color="primary" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
+            <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
+          </div>
+        </a>
+        <!-- Sidenav Type -->
+        <div class="mt-3">
+          <h6 class="mb-0">Sidenav Type</h6>
+          <p class="text-sm">Choose between 2 different sidenav types.</p>
+        </div>
+        <div class="d-flex">
+          <button class="btn bg-gradient-dark px-3 mb-2 active" data-class="bg-gradient-dark" onclick="sidebarType(this)">Dark</button>
+          <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
+          <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
+        </div>
+        <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
+        <!-- Navbar Fixed -->
+        <div class="mt-3 d-flex">
+          <h6 class="mb-0">Navbar Fixed</h6>
+          <div class="form-check form-switch ps-0 ms-auto my-auto">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
+          </div>
+        </div>
+        <hr class="horizontal dark my-3">
+        <div class="mt-2 d-flex">
+          <h6 class="mb-0">Light / Dark</h6>
+          <div class="form-check form-switch ps-0 ms-auto my-auto">
+            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
+          </div>
+        </div>
+        <hr class="horizontal dark my-sm-4">
+        
+      </div>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/material-dashboard.min.js?v=3.0.2"></script>
+
+  
+</body>
+
+</html>
