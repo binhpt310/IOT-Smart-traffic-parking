@@ -1,6 +1,6 @@
 # 🚗IOT-Smart-traffic-parking🚗
 
-My group final project.
+My IOT class group project.
 
 ## 1. Main model
 - Easy model
